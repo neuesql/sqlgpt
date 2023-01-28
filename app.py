@@ -1,27 +1,31 @@
 import torch
-from loguru import logger
-from metaflow import FlowSpec, step, S3
+from metaflow import FlowSpec, step
 
 
 class TrainingFlow(FlowSpec):
 
     @step
+    def start(self):
+        print("Start building model job")
+        self.next(self.preparing)
+
+    @step
+    def end(self):
+        print("End building job")
+
+    @step
     def preparing(self):
-        with S3(run=self) as s3:
-            oracle_sql = s3.get_many("oracle")
-            mysql_sql = s3.get_many("mysql")
         self.next(self.training)
 
     @step
     def training(self):
-        self.train_func(...)
         self.next(self.validation)
 
     @step
     def validation(self):
-        self.validate_fun(...)
+        self.next(self.end)
 
-    def train_func(self, epoch, tokenizer, model, device, loader, optimizer):
+    def train_process(self, epoch, tokenizer, model, device, loader, optimizer):
         model.train()
         for _, data in enumerate(loader, 0):
             y = data['target_ids'].to(device, dtype=torch.long)
@@ -41,7 +45,7 @@ class TrainingFlow(FlowSpec):
             loss.backward()
             optimizer.step()
 
-    def validate_fun(self, epoch, tokenizer, model, device, loader):
+    def validate_process(self, epoch, tokenizer, model, device, loader):
         model.eval()
         predictions = []
         actuals = []
@@ -71,11 +75,5 @@ class TrainingFlow(FlowSpec):
         return predictions, actuals
 
 
-# pylint: disable=no-value-for-parameter
-
-def sql_app() -> None:
-    flow = TrainingFlow()
-
-
 if __name__ == "__main__":
-    sql_app()
+    flow = TrainingFlow()
