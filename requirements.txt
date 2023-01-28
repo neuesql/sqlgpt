@@ -8,4 +8,5 @@ loguru
 huggingface_hub
 testcontainers
 sqlalchemy
+psycopg2
 nose2
