@@ -20,9 +20,11 @@ class TestOraclePostgresql(TestCase):
     def test_pg_version(self):
         pge = sqlalchemy.create_engine(self.pgdb.get_connection_url())
         pre = pge.execute("select version()")
+        print(pre)
         self.assertIsNotNone(pre)
 
     def test_oracle_version(self):
         oe = sqlalchemy.create_engine(self.oracledb.get_connection_url())
         pe = oe.execute("select version()")
+        print(pe)
         self.assertIsNotNone(pe)

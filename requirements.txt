@@ -6,7 +6,10 @@ torch
 metaflow
 loguru
 huggingface_hub
+# Test Frameworks
 testcontainers
+nose2
+# database Dependencies
 sqlalchemy
 psycopg2
-nose2
+cx_Oracle
