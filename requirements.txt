@@ -6,3 +6,6 @@ torch
 metaflow
 loguru
 huggingface_hub
+testcontainers
+sqlalchemy
+nose2
