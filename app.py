@@ -29,9 +29,6 @@ class TrainingFlow(FlowSpec):
         model.train()
         for _, data in enumerate(loader, 0):
             y = data['target_ids'].to(device, dtype=torch.long)
-            # y_ids = y[:, :-1].contiguous()
-            # lm_labels = y[:, 1:].clone().detach()
-            # lm_labels[y[:, 1:] == tokenizer.pad_token_id] = -100
             ids = data['source_ids'].to(device, dtype=torch.long)
             mask = data['source_mask'].to(device, dtype=torch.long)
 
