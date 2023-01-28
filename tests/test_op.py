@@ -3,8 +3,8 @@ from unittest import TestCase, skip
 import sqlalchemy
 from testcontainers.postgres import PostgresContainer
 from testcontainers.oracle import OracleDbContainer
-import os
-os.environ["DOCKER_HOST"] = 'tcp://127.0.0.1:2375'
+# import os
+# os.environ["DOCKER_HOST"] = 'tcp://127.0.0.1:2375'
 
 class TestOraclePostgresql(TestCase):
 
