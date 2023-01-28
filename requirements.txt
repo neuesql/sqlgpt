@@ -4,5 +4,5 @@ numpy
 pandas
 torch
 metaflow
-hydra-core
 loguru
+huggingface_hub
