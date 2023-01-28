@@ -8,6 +8,8 @@ loguru
 huggingface_hub
 # Test Frameworks
 testcontainers
+requests
+chardet
 nose2
 # database Dependencies
 sqlalchemy
