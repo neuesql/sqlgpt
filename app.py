@@ -6,6 +6,10 @@ from metaflow import FlowSpec, step
 class TrainingFlow(FlowSpec):
 
     @step
+    def preparing(self):
+        pass
+
+    @step
     def training(self):
         self.train_func(...)
 
