@@ -1,17 +1,21 @@
 import torch
 from loguru import logger
-from metaflow import FlowSpec, step
+from metaflow import FlowSpec, step, S3
 
 
 class TrainingFlow(FlowSpec):
 
     @step
     def preparing(self):
-        pass
+        with S3(run=self) as s3:
+            oracle_sql = s3.get_many("oracle")
+            mysql_sql = s3.get_many("mysql")
+        self.next(self.training)
 
     @step
     def training(self):
         self.train_func(...)
+        self.next(self.validation)
 
     @step
     def validation(self):
