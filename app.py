@@ -2,10 +2,13 @@ from io import StringIO
 
 import pandas as pd
 import streamlit as st
+import os
+
+from src.client import SQLTransformer
 
 st.set_page_config(
     page_title='A SQL Generative Pre-trained Transformer',
-    # layout='wide',
+    layout='wide',
     initial_sidebar_state='expanded'
 )
 
@@ -37,6 +40,11 @@ input_file = st.sidebar.file_uploader(
 
 st.subheader("Target SQL")
 
+client = SQLTransformer(
+    organization=os.getenv('openapi-org'),
+    api_key=os.getenv('openapi-key')
+)
+
 
 def transform():
     code = input_text
@@ -47,8 +55,9 @@ def transform():
             # To convert to a string based IO:
             stringio = StringIO(input_file.getvalue().decode("utf-8"))
             # To read file as string:
-            string_data = stringio.read()
-            st.code(string_data)
+            source_sql = stringio.read()
+            target_sql = client.generate(source_sql)
+            st.code(target_sql)
 
 
 transform_button = st.sidebar.button(
