@@ -1,13 +1,18 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-
-st.title('Uber pickups in NYC')
-import streamlit as st
-import pandas as pd
 from io import StringIO
 
+import pandas as pd
+import streamlit as st
+
+st.set_page_config(
+    page_title='A SQL Generative Pre-trained Transformer',
+    # layout='wide',
+    initial_sidebar_state='expanded'
+)
+
 databases = ['Oracle', 'DB2', 'SQLServer', 'PostgreSQL']
+# -------------
+
+st.sidebar.header('A SQL Transformer')
 
 source_database = st.sidebar.selectbox(
     label='Source Database',
@@ -21,25 +26,34 @@ target_database = st.sidebar.selectbox(
     index=3
 )
 
-input_files = st.sidebar.file_uploader("Choose a SQL file", accept_multiple_files=True)
-for uploaded_file in input_files:
-    bytes_data = uploaded_file.read()
-    st.write("filename:", uploaded_file.name)
-    st.write(bytes_data)
-
 input_text = st.sidebar.text_area(
     label='Insert SQL',
     placeholder='select * from now()'
 )
+
+input_file = st.sidebar.file_uploader(
+    label="Choose a SQL file",
+    accept_multiple_files=False)
+
+st.subheader("Target SQL")
+
+
+def transform():
+    code = input_text
+    if code:
+        st.code(code, language='sql')
+    else:
+        if input_file is not None:
+            # To convert to a string based IO:
+            stringio = StringIO(input_file.getvalue().decode("utf-8"))
+            # To read file as string:
+            string_data = stringio.read()
+            st.code(string_data)
+
+
 transform_button = st.sidebar.button(
-    label='Transform', type='primary')
+    label='Transform', type='primary',
+    on_click=transform()
+)
 
-col1, col2 = st.columns(2)
-
-with col1:
-    st.header("Source SQL")
-    st.image("https://static.streamlit.io/examples/dog.jpg")
-
-with col2:
-    st.header("Target SQL")
-    st.image("https://static.streamlit.io/examples/dog.jpg")
+# ---------------------------------------

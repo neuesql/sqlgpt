@@ -19,3 +19,4 @@ cx_Oracle
 
 # Web Framework
 streamlit
+barfi
