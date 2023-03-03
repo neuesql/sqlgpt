@@ -6,6 +6,7 @@ torch
 metaflow
 loguru
 huggingface_hub
+openai
 # Test Frameworks
 testcontainers
 requests
@@ -15,3 +16,6 @@ nose2
 sqlalchemy
 psycopg2
 cx_Oracle
+
+# Web Framework
+streamlit
