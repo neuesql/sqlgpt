@@ -2,9 +2,21 @@
 SQL **GPT** Generative Pre-trained Transformer for SQL migration with different SQL Oracle/Mysql/SQL Server/PostgreSQL... etc.
 
 ## The Problem
-## Marketing And Analytics 
+Database Mirgation is complicated task 
+
+## Marketing And Analytics
+
 ## The Solution and Features
 ## Overview of Architecture
+
+* There are serveral components like SQLcollector, Dummy-Data-Generator, SQLGPT service, ect...
+* **SQLCollector**:  Web Service to receieve source SQL.
+* **DataGenerator**: Generate Dummy Data for Schema.
+* **SQLGPT Service**: Core Service to generate target SQL.
+* **Models** : V1 from OpenAI model; V2 from Google T5 Model.
+* **SQLTrainer**: training the model by new HumanFeedback Reinforcement learning.
+![SQL GPT Architecture](./docs/sqlgbt.drawio.svg)
+
 ## Algorithm Explanation 
 ## Demonstration
 
