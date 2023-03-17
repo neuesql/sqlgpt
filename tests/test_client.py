@@ -3,16 +3,13 @@ import os
 
 import loguru
 import openai
-
-from src.client import SQLTransformer
+import SQLTransformer
 
 
 class TestSQLTransformer(TestCase):
 
     def setUp(self) -> None:
-        org = 'org-LApth0Z5jom3MtfJQflCxXk6'
-        key = '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'
-        self.client = SQLTransformer(org, key)
+        self.client = SQLTransformer(os.getenv("OPENAPI_KEY"), os.getenv("OPENAPI_SECRET"))
 
     def test_ping(self):
         ms = openai.Model.list()

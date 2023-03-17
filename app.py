@@ -1,8 +1,6 @@
 from io import StringIO
 
-import pandas as pd
 import streamlit as st
-import os
 
 from src.client import SQLTransformer
 
@@ -12,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state='expanded'
 )
 
-databases = ['Oracle', 'DB2', 'SQLServer', 'PostgreSQL']
+databases = ['Oracle', 'SQLServer', 'MySQL', 'DB2', 'PostgreSQL', 'Snowflake', 'Redshift']
 # -------------
 
 st.sidebar.header('A SQL Transformer')
@@ -26,7 +24,7 @@ source_database = st.sidebar.selectbox(
 target_database = st.sidebar.selectbox(
     label='Target Database',
     options=databases,
-    index=3
+    index=4
 )
 
 input_text = st.sidebar.text_area(
@@ -38,26 +36,29 @@ input_file = st.sidebar.file_uploader(
     label="Choose a SQL file",
     accept_multiple_files=False)
 
-st.subheader("Target SQL")
-
 client = SQLTransformer(
-    organization=os.getenv('openapi-org'),
-    api_key=os.getenv('openapi-key')
+    organization='org-LApth0Z5jom3MtfJQflCxXk6',
+    api_key='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'
 )
 
 
 def transform():
     code = input_text
+    source = source_database
+    target = target_database
     if code:
-        st.code(code, language='sql')
+        ts = client.generate(source, target, code)
+        for solution in ts:
+            st.code(solution, language='sql')
     else:
         if input_file is not None:
             # To convert to a string based IO:
             stringio = StringIO(input_file.getvalue().decode("utf-8"))
             # To read file as string:
-            source_sql = stringio.read()
-            target_sql = client.generate(source_sql)
-            st.code(target_sql)
+            sql = stringio.read()
+            ts = client.generate(source, target, sql)
+            for solution in ts:
+                st.code(solution, language='sql')
 
 
 transform_button = st.sidebar.button(
